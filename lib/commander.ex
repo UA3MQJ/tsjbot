@@ -20,8 +20,20 @@ defmodule TSJBot.Commander do
     {msg_type, Map.merge(%{chat_id: msg["chat_id"], message_id: message_id}, view)}
   end
 
+  defp main_menu do
+    [[%{text: "Последние новости"}, %{text: "Контакты ТСЖ"}],
+      [%{text: "Паспортист"}, %{text: "Оставить заявку"}]]
+  end
+
   def get_view(:message, "/start") do
-    {:send_message, %{text: "ТСЖ О'Пушкино - 1"}}
+    # text = "#{Localization.t("welcome_to_bot_short")} #{options[:company_name]}!\n" <>
+    # Localization.t("admin_start") <> "\xE2\xAC\x87 \n"
+    # {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
+    # %{text: text, reply_markup: buttons}
+    text = "ТСЖ О'Пушкино - 1"
+    {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
+
+    {:send_message, %{text: text, reply_markup: buttons}}
   end
   def get_view(:message, "show inline buttons") do
     controls = [

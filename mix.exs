@@ -14,7 +14,7 @@ defmodule TSJBot.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :bots],
+    [applications: [:logger, :poison, :bots],
      mod: {TSJBot, []}]
   end
 
@@ -30,6 +30,7 @@ defmodule TSJBot.Mixfile do
   defp deps do
     [
       {:bots, git: "git@git.it.tender.pro:bot/bots.git"},
+      {:poison, "~> 3.1"},
       {:distillery, "~> 1.5"},
     ]
   end
