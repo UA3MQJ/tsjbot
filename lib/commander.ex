@@ -24,57 +24,57 @@ defmodule TSJBot.Commander do
     [[%{text: "Последние новости"}, %{text: "Контакты ТСЖ"}],
       [%{text: "Паспортист"}, %{text: "Оставить заявку"}]]
   end
+  defp error_msg, do: {:send_message, %{text: "Ошибка в системе"}}
 
   def get_view(:message, "/start") do
-    # text = "#{Localization.t("welcome_to_bot_short")} #{options[:company_name]}!\n" <>
-    # Localization.t("admin_start") <> "\xE2\xAC\x87 \n"
-    # {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
-    # %{text: text, reply_markup: buttons}
     text = "ТСЖ О'Пушкино - 1"
     {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
 
     {:send_message, %{text: text, reply_markup: buttons}}
   end
-  def get_view(:message, "show inline buttons") do
-    controls = [
-      [%{text: "Button1", callback_data: "/callback1"}],
-      [%{text: "Test button 2", callback_data: "/callback2"}]
-    ]
-
-    {:ok, buttons} = Poison.encode(%{inline_keyboard: controls})
-
-    {:send_message, %{text: "Inline buttons test", reply_markup: buttons}}
+  def get_view(:message, "Контакты ТСЖ") do
+    case HTTPoison.get("https://raw.githubusercontent.com/UA3MQJ/tsjbot/master/priv/contact.txt") do
+      {:ok, result}->
+        text = result.body
+        {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
+        {:send_message, %{text: text, reply_markup: buttons}}
+      _else ->
+        error_msg()
+    end
   end
-  def get_view(:message, "show updatable form") do
-
-    controls = [
-      [%{text: "Update (1)", callback_data: "/update"}]
-    ]
-
-    {:ok, buttons} = Poison.encode(%{inline_keyboard: controls})
-
-    {:send_message, %{text: "Inline buttons test", reply_markup: buttons}}
+  def get_view(:message, "Последние новости") do
+    case HTTPoison.get("https://raw.githubusercontent.com/UA3MQJ/tsjbot/master/priv/news.txt") do
+      {:ok, result}->
+        text = result.body
+        {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
+        {:send_message, %{text: text, reply_markup: buttons}}
+      _else ->
+        error_msg()
+    end
   end
-  def get_view(:callback, "/callback1") do
-    {:send_message, %{text: "callback1 clicked"}}
+  def get_view(:message, "Паспортист") do
+    case HTTPoison.get("https://raw.githubusercontent.com/UA3MQJ/tsjbot/master/priv/pass_contact.txt") do
+      {:ok, result}->
+        text = result.body
+        {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
+        {:send_message, %{text: text, reply_markup: buttons}}
+      _else ->
+        error_msg()
+    end
   end
-  def get_view(:callback, "/callback2") do
-    {:send_message, %{text: "callback2 clicked"}}
+  def get_view(:message, "Оставить заявку") do
+    case HTTPoison.get("https://raw.githubusercontent.com/UA3MQJ/tsjbot/master/priv/order.txt") do
+      {:ok, result}->
+        text = result.body
+        {:ok, buttons} = Poison.encode(%{keyboard: main_menu(), resize_keyboard: true})
+        {:send_message, %{text: text, reply_markup: buttons}}
+      _else ->
+        error_msg()
+    end
   end
-  def get_view(:callback, "/update") do
-    ref=make_ref()
-    controls = [
-      [%{text: "Update (#{inspect ref})", callback_data: "/update"}]
-    ]
 
-    {:ok, buttons} = Poison.encode(%{inline_keyboard: controls})
-
-    {:edit_text, %{text: "updated", reply_markup: buttons}}
-  end
   def get_view(_, _) do
-    {:send_message, %{text: "unknown message"}}
+    {:send_message, %{text: "Сообщение не поддерживается"}}
   end
-# {:edit_buttons, Map.merge(view, %{chat_id: chat_id, message_id: message_id})}
-
 
 end
