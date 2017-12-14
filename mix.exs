@@ -4,7 +4,7 @@ defmodule TSJBot.Mixfile do
   def project do
     [app: :tsjbot,
      version: "2017.12.13",
-     elixir: "~> 1.4",
+     elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -33,4 +33,5 @@ defmodule TSJBot.Mixfile do
       {:distillery, "~> 1.5"},
     ]
   end
+
 end
