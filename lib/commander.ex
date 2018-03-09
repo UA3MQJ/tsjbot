@@ -125,7 +125,7 @@ defmodule TSJBot.Commander do
 
     body = %{
       text: text,
-      chat_id: "@Opushkino1Adm"
+      chat_id: "-1001178161945"
     }
     encoded = URI.encode_query(body)
     headers = ['Content-Type': "application/x-www-form-urlencoded"]
