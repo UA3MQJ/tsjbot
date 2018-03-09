@@ -25,12 +25,16 @@ defmodule TSJBot.Commander do
             TSJBot.Storage.delete_order(msg["chat_id"])
             {msg_type, view} = get_view(type, data, order)
             {msg_type, Map.merge(%{chat_id: msg["chat_id"], message_id: message_id}, view)}
-          "Отменить" ->
+          "Отмена" ->
             TSJBot.Storage.stop_expectation(msg["chat_id"])
             TSJBot.Storage.delete_order(msg["chat_id"])
+            {msg_type, view} = get_view(:message, "/start")
+            {msg_type, Map.merge(%{chat_id: msg["chat_id"], message_id: message_id}, view)}
           "/start" ->
             TSJBot.Storage.stop_expectation(msg["chat_id"])
             TSJBot.Storage.delete_order(msg["chat_id"])
+            {msg_type, view} = get_view(:message, "/start")
+            {msg_type, Map.merge(%{chat_id: msg["chat_id"], message_id: message_id}, view)}
           _else ->
             message = msg["message"]["text"]
             TSJBot.Storage.add_order(msg["chat_id"], message)
