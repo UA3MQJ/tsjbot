@@ -10,7 +10,7 @@ config :bots, :bots_list,
     # имя зарегистрированного Telegram бота
     bot_name: {:system, :string, "BOT_NAME", "@Opushkino1bot"},
     # токен бота
-    token: {:system, :string, "BOT_TOKEN", "4425450659:AAGclPta8A7_JU407SLhgYWO6olnPODCtwo"},
+    token: {:system, :string, "BOT_TOKEN", "425450659:AAGclPta8A7_JU407SLhgYWO6olnPODCtwo"},
     # тип соединения с серверами Telegram - :longpolling or :webhook
     type: :longpolling,
     # командер для обработки сообщений
