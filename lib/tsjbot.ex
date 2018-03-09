@@ -7,6 +7,7 @@ defmodule TSJBot do
 
     opts = [strategy: :one_for_one]
     children = [
+      worker(TSJBot.Storage, [])
     ]
 
     Supervisor.start_link(children, opts)
